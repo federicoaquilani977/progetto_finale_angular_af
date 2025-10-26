@@ -1,0 +1,12 @@
+<nav>
+  <h1>{{title}}</h1>
+  <div class="nav-links">
+    <a routerLink="/posts" routerLinkActive="active">Lista Post</a>
+    <a routerLink="/create" routerLinkActive="active">Nuovo Post</a>
+    <button (click)="resetStorage()" class="btn-reset">Reset Dati</button>
+  </div>
+</nav>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

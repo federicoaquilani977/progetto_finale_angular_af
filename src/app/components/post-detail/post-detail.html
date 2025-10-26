@@ -1,0 +1,42 @@
+<div class="post-detail">
+  <div *ngIf="loading">Caricamento...</div>
+
+  <div *ngIf="!loading && post">
+    <div class="post-header">
+      <h2>{{post.title}}</h2>
+      <div class="post-meta">
+        <span class="post-id">#{{post.id}}</span>
+        <span class="user">User {{post.userId}}</span>
+      </div>
+    </div>
+
+    <div class="post-body">
+      <p>{{post.body}}</p>
+    </div>
+
+    <div class="actions">
+      <button (click)="goBack()" class="btn btn-secondary">Torna alla Lista</button>
+      <a [routerLink]="['/edit', post.id]" class="btn btn-primary">Modifica Post</a>
+    </div>
+
+    <div class="comments-section">
+      <h3>Commenti ({{comments.length}})</h3>
+      
+      <div class="comment" *ngFor="let comment of comments">
+        <div class="comment-header">
+          <strong>{{comment.name}}</strong>
+          <span class="email">{{comment.email}}</span>
+        </div>
+        <p>{{comment.body}}</p>
+      </div>
+
+      <div *ngIf="comments.length === 0" class="no-comments">
+        Nessun commento disponibile
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !post" class="error">
+    Post non trovato
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="post-list">
+  <h2>Lista Post</h2>
+
+  <div *ngIf="loading">Caricamento...</div>
+
+  <div class="posts" *ngIf="!loading">
+    <div class="post-card" *ngFor="let post of posts">
+      <div class="post-header">
+        <span class="post-id">#{{post.id}}</span>
+        <span class="user">User {{post.userId}}</span>
+      </div>
+      
+      <h3>{{post.title}}</h3>
+      <p>{{post.body}}</p>
+
+      <div class="actions">
+        <a [routerLink]="['/detail', post.id]" class="btn btn-info">Dettagli</a>
+        <a [routerLink]="['/edit', post.id]" class="btn btn-warning">Modifica</a>
+        <button (click)="deletePost(post.id)" class="btn btn-danger">Elimina</button>
+      </div>
+    </div>
+  </div>
+</div>
