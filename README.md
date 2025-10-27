@@ -1,59 +1,43 @@
-# ProgettoFinaleAngularAf
+Analizzando l’infrastruttura, si nota che i vari moduli (UI Angular, Ordine BL, Prodotto BL, Cliente BL e i rispettivi DBMS) sono distribuiti su server diversi e comunicano tramite Internet.
+Questo tipo di architettura è vantaggiosa per la scalabilità, ma introduce diversi punti critici dal punto di vista della sicurezza.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.7.
+1. Punti critici dell’infrastruttura:
 
-## Development server
+- Ogni comunicazione tra server passa su Internet, quindi può essere intercettata o modificata se non cifrata.
 
-To start a local development server, run:
+- Il database centrale (DBMS) è particolarmente sensibile: un accesso non autorizzato può compromettere tutti i dati.
 
-```bash
-ng serve
-```
+- Le API esposte dai vari servizi BL (Business Logic) possono essere bersaglio di attacchi come SQL Injection, XSS o brute force.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Se uno dei server viene compromesso, l’attaccante potrebbe muoversi lateralmente verso gli altri servizi.
 
-## Code scaffolding
+2. Tecnologie per rendere sicura l’infrastruttura:
+Per proteggere la rete e i dati, adotterei:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Cifratura TLS/HTTPS per tutte le connessioni tra frontend e backend, e tra i vari server.
 
-```bash
-ng generate component component-name
-```
+- Firewall e segmentazione di rete, in modo che ogni server comunichi solo con i servizi strettamente necessari.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- Autenticazione e autorizzazione tramite JWT o OAuth2 per l’accesso alle API.
 
-```bash
-ng generate --help
-```
+- VPN o tunnel sicuri per la comunicazione tra i server interni.
 
-## Building
+- Database protetti e con dati sensibili cifrati.
 
-To build the project run:
+- Aggiornamenti e patch regolari dei sistemi operativi e dei middleware.
 
-```bash
-ng build
-```
+- Monitoraggio con IDS/IPS per rilevare tentativi di intrusione o anomalie di traffico.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+3. Regole tecnologiche e protocolli da seguire:
 
-## Running unit tests
+- Tutti i servizi devono usare HTTPS (SSL/TLS) e certificati validi.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- Validazione dei dati in ingresso per evitare SQL Injection e Cross-Site Scripting.
 
-```bash
-ng test
-```
+- Politiche di least privilege per utenti, applicazioni e database.
 
-## Running end-to-end tests
+- Implementazione del CORS solo per origini autorizzate (es. dominio dell’app Angular).
 
-For end-to-end (e2e) testing, run:
+- Logging e auditing per tracciare accessi e modifiche ai dati.
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Uso di protocolli sicuri anche per la parte interna (ad esempio SSH anziché Telnet).
